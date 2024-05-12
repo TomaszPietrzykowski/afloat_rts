@@ -19,6 +19,9 @@ public class PlacementSystem : MonoBehaviour
     [SerializeField]
     private GameObject gridVisualization;
 
+    [SerializeField]
+    private AudioSource source;
+
     private void Start()
     {
         StopPlacement();
@@ -43,6 +46,7 @@ public class PlacementSystem : MonoBehaviour
         {
             return;
         }
+        source.Play();
         Vector3 mousePosition = inputManager.GetSelectedMapPosition();
         Vector3Int gridPosition = grid.WorldToCell(mousePosition);
         GameObject newObject = Instantiate(database.objectsData[selectedObjectIndex].Prefab);
