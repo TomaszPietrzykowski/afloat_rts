@@ -86,4 +86,14 @@ public class PlacementSystem : MonoBehaviour
         lastDetectedPosition = Vector3Int.zero;
         buildingState = null;
     }
+
+    public void StartDemolish()
+    {
+        StopPlacement();
+        gridVisualization.SetActive(true);
+        buildingState = new DemolishState(grid, preview, floorData, furnitureData, objectPlacer);
+
+        inputManager.OnClicked += PlaceStructure;
+        inputManager.OnExit += StopPlacement;
+    }
 }
