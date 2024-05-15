@@ -29,9 +29,13 @@ public class PlacementSystem : MonoBehaviour
 
     IPlacementState buildingState;
 
+    [SerializeField]
+    SoundFeedback soundFeedback;
+
     private void Start()
     {
         StopPlacement();
+        gridVisualization.SetActive(false);
         floorData = new GridData();
         furnitureData = new GridData();
     }
@@ -61,23 +65,17 @@ public class PlacementSystem : MonoBehaviour
         buildingState.OnAction(gridPosition);
     }
 
-    //private bool CheckPlacementValidity(Vector3Int gridPosition, int selectedObjectIndex)
-    //{
-    //    GridData selectedData = database.objectsData[selectedObjectIndex].Id == 0 ? floorData : furnitureData;
-
-    //    return selectedData.CanPlaceObjectAt(gridPosition, database.objectsData[selectedObjectIndex].Size);
-    //}
-
     public void StartPlacement(int Id)
     {
         StopPlacement();
         gridVisualization.SetActive(true);
-        buildingState = new PlacementState(Id, grid, preview, database, floorData, furnitureData, objectPlacer);
+        buildingState = new PlacementState(Id, grid, preview, database, floorData, furnitureData, objectPlacer, soundFeedback);
         inputManager.OnClicked += PlaceStructure;
         inputManager.OnExit += StopPlacement;
     }
     private void StopPlacement()
     {
+        soundFeedback.PlaySound(SoundType.Click);
         if (buildingState == null) return;
         gridVisualization.SetActive(false);
         buildingState.EndState();
@@ -91,7 +89,7 @@ public class PlacementSystem : MonoBehaviour
     {
         StopPlacement();
         gridVisualization.SetActive(true);
-        buildingState = new DemolishState(grid, preview, floorData, furnitureData, objectPlacer);
+        buildingState = new DemolishState(grid, preview, floorData, furnitureData, objectPlacer, soundFeedback);
 
         inputManager.OnClicked += PlaceStructure;
         inputManager.OnExit += StopPlacement;
