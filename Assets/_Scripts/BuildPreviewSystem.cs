@@ -40,13 +40,14 @@ public class BuildPreviewSystem : MonoBehaviour
         if (size.x > 0 || size.y > 0)
         {
             cellIndicator.transform.localScale = new Vector3(size.x, 1, size.y);
-            cellIndicatorRenderer.sharedMaterial.mainTextureScale = size;
+            cellIndicatorRenderer.material.mainTextureScale = size;
         }
     }
 
     private void PreparePreview(GameObject previewObject)
     {
         Renderer[] renderers = previewObject.GetComponentsInChildren<Renderer>();
+
         foreach (Renderer renderer in renderers)
         {
             Material[] materials = renderer.materials;
@@ -69,7 +70,7 @@ public class BuildPreviewSystem : MonoBehaviour
     {
         Color color = validity ? Color.white : Color.red;
         color.a = 0.5f;
-        cellIndicatorRenderer.sharedMaterial.color = color;
+        cellIndicatorRenderer.material.color = color;
         previewMaterialInstance.color = color;
     }
 
