@@ -29,7 +29,7 @@ public class DemolishState : IPlacementState
 
     public void EndState()
     {
-        buildPreviewSystem.StartShowingDemolishPreview();
+        buildPreviewSystem.StopShowingDemolishPreview();
     }
 
     public void OnAction(Vector3Int gridPosition)

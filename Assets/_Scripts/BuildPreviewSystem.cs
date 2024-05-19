@@ -101,4 +101,9 @@ public class BuildPreviewSystem : MonoBehaviour
         PrepareCursor(Vector2Int.one);
         ApplyFeedbackToCursor(false);
     }
+
+    internal void StopShowingDemolishPreview()
+    {
+        cellIndicator.SetActive(false);
+    }
 }
