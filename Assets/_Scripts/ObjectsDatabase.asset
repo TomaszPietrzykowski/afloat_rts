@@ -13,20 +13,20 @@ MonoBehaviour:
   m_Name: ObjectsDatabase
   m_EditorClassIdentifier: 
   objectsData:
-  - <Name>k__BackingField: Floor
+  - <Name>k__BackingField: Plastic_Raft
     <Id>k__BackingField: 0
-    <Size>k__BackingField: {x: 1, y: 1}
-    <Prefab>k__BackingField: {fileID: 175886647813805099, guid: 6bafb9556d35ba840bebea4eea7d34c2,
+    <Size>k__BackingField: {x: 2, y: 2}
+    <Prefab>k__BackingField: {fileID: 4781291386160620434, guid: 1677aabe566f3b14f99bdc1c8b45d2af,
       type: 3}
   - <Name>k__BackingField: Chair
     <Id>k__BackingField: 1
     <Size>k__BackingField: {x: 1, y: 1}
     <Prefab>k__BackingField: {fileID: 4428052050468720457, guid: e033e50487fb016449143cd70d837387,
       type: 3}
-  - <Name>k__BackingField: BigBed
+  - <Name>k__BackingField: Bed
     <Id>k__BackingField: 2
     <Size>k__BackingField: {x: 2, y: 2}
-    <Prefab>k__BackingField: {fileID: 4781291386160620434, guid: 1677aabe566f3b14f99bdc1c8b45d2af,
+    <Prefab>k__BackingField: {fileID: 3487007735555770654, guid: 4721f1b576334dc46b3c72470bf613e3,
       type: 3}
   - <Name>k__BackingField: Table
     <Id>k__BackingField: 3

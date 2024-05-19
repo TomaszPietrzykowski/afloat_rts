@@ -8,8 +8,8 @@ public class PlacementState : IPlacementState
     Grid grid;
     BuildPreviewSystem buildPreviewSystem;
     ObjectDatabaseSO database;
-    GridData floorData;
-    GridData furnitureData;
+    GridData raftData;
+    GridData buildingData;
     ObjectPlacer objectPlacer;
     SoundFeedback soundFeedback;
 
@@ -17,8 +17,8 @@ public class PlacementState : IPlacementState
                           Grid grid,
                           BuildPreviewSystem buildPreviewSystem,
                           ObjectDatabaseSO database,
-                          GridData floorData,
-                          GridData furnitureData,
+                          GridData raftData,
+                          GridData buildingData,
                           ObjectPlacer objectPlacer,
                           SoundFeedback soundFeedback)
     {
@@ -26,8 +26,8 @@ public class PlacementState : IPlacementState
         this.grid = grid;
         this.buildPreviewSystem = buildPreviewSystem;
         this.database = database;
-        this.floorData = floorData;
-        this.furnitureData = furnitureData;
+        this.raftData = raftData;
+        this.buildingData = buildingData;
         this.objectPlacer = objectPlacer;
         this.soundFeedback = soundFeedback;
 
@@ -61,7 +61,7 @@ public class PlacementState : IPlacementState
         soundFeedback.PlaySound(SoundType.Place);
         int index = objectPlacer.PlaceObject(database.objectsData[selectedObjectIndex].Prefab, grid.CellToWorld(gridPosition));
 
-        GridData selectedData = database.objectsData[selectedObjectIndex].Id == 0 ? floorData : furnitureData;
+        GridData selectedData = database.objectsData[selectedObjectIndex].Id == 0 ? raftData : buildingData;
         selectedData.AddObjectAt(gridPosition,
                                  database.objectsData[selectedObjectIndex].Size,
                                  database.objectsData[selectedObjectIndex].Id,
@@ -71,9 +71,17 @@ public class PlacementState : IPlacementState
 
     private bool CheckPlacementValidity(Vector3Int gridPosition, int selectedObjectIndex)
     {
-        GridData selectedData = database.objectsData[selectedObjectIndex].Id == 0 ? floorData : furnitureData;
-
-        return selectedData.CanPlaceObjectAt(gridPosition, database.objectsData[selectedObjectIndex].Size);
+        GridData selectedData = database.objectsData[selectedObjectIndex].Id == 0 ? raftData : buildingData;
+        if (database.objectsData[selectedObjectIndex].Id == 0)
+        {
+            return raftData.CanPlaceFloatationAt(gridPosition, database.objectsData[selectedObjectIndex].Size);
+        }
+        else if (buildingData.CanPlaceBuildingAt(gridPosition, database.objectsData[selectedObjectIndex].Size)
+            && raftData.IsRaftAvailaible(gridPosition, database.objectsData[selectedObjectIndex].Size))
+        {
+            return true;
+        }
+        return false;
     }
 
     public void UpdateState(Vector3Int gridPosition)

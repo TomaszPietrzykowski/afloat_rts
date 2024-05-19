@@ -17,7 +17,7 @@ public class PlacementSystem : MonoBehaviour
     [SerializeField]
     private AudioSource source;
 
-    private GridData floorData, furnitureData;
+    private GridData floatationData, buildingsData;
 
     [SerializeField]
     private BuildPreviewSystem preview;
@@ -36,8 +36,8 @@ public class PlacementSystem : MonoBehaviour
     {
         StopPlacement();
         gridVisualization.SetActive(false);
-        floorData = new GridData();
-        furnitureData = new GridData();
+        floatationData = new GridData();
+        buildingsData = new GridData();
     }
 
     private void Update()
@@ -69,7 +69,7 @@ public class PlacementSystem : MonoBehaviour
     {
         StopPlacement();
         gridVisualization.SetActive(true);
-        buildingState = new PlacementState(Id, grid, preview, database, floorData, furnitureData, objectPlacer, soundFeedback);
+        buildingState = new PlacementState(Id, grid, preview, database, floatationData, buildingsData, objectPlacer, soundFeedback);
         inputManager.OnClicked += PlaceStructure;
         inputManager.OnExit += StopPlacement;
     }
@@ -89,7 +89,7 @@ public class PlacementSystem : MonoBehaviour
     {
         StopPlacement();
         gridVisualization.SetActive(true);
-        buildingState = new DemolishState(grid, preview, floorData, furnitureData, objectPlacer, soundFeedback);
+        buildingState = new DemolishState(grid, preview, floatationData, buildingsData, objectPlacer, soundFeedback);
 
         inputManager.OnClicked += PlaceStructure;
         inputManager.OnExit += StopPlacement;
