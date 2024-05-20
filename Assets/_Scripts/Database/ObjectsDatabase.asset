@@ -20,10 +20,10 @@ MonoBehaviour:
       type: 3}
     <CostPlastic>k__BackingField: 8
     <CostWood>k__BackingField: 0
-  - <Name>k__BackingField: Chair
+  - <Name>k__BackingField: Solar_Still
     <Id>k__BackingField: 1
     <Size>k__BackingField: {x: 1, y: 1}
-    <Prefab>k__BackingField: {fileID: 4428052050468720457, guid: e033e50487fb016449143cd70d837387,
+    <Prefab>k__BackingField: {fileID: 203639700893198770, guid: 772d594a51ef3604c868216f82b76325,
       type: 3}
     <CostPlastic>k__BackingField: 0
     <CostWood>k__BackingField: 4
