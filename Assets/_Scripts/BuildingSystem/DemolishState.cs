@@ -32,7 +32,7 @@ public class DemolishState : IPlacementState
         buildPreviewSystem.StopShowingDemolishPreview();
     }
 
-    public void OnAction(Vector3Int gridPosition)
+    public void OnAction(Vector3Int gridPosition, bool isInitial = false)
     {
         GridData selectedData = null;
         if (furnitureData.CanPlaceBuildingAt(gridPosition, Vector2Int.one) == false)

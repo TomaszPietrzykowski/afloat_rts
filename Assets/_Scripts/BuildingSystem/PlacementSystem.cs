@@ -41,6 +41,41 @@ public class PlacementSystem : MonoBehaviour
         gridVisualization.SetActive(false);
         floatationData = new GridData();
         buildingsData = new GridData();
+        setupInitialBuildings();
+    }
+
+    public void setupInitialBuildings()
+    {
+        // refactor:
+        int index = 0;
+        Vector3Int location = new Vector3Int(0, 0, 0);
+        buildingState = new PlacementState(index, grid, preview, database, floatationData, buildingsData, objectPlacer, soundFeedback, gameManager);
+        buildingState.OnAction(location, true);
+        buildingState.EndState();
+
+        index = 0;
+        location = new Vector3Int(2, 0, 0);
+        buildingState = new PlacementState(index, grid, preview, database, floatationData, buildingsData, objectPlacer, soundFeedback, gameManager);
+        buildingState.OnAction(location, true);
+        buildingState.EndState();
+
+        index = 0;
+        location = new Vector3Int(0, 0, 2);
+        buildingState = new PlacementState(index, grid, preview, database, floatationData, buildingsData, objectPlacer, soundFeedback, gameManager);
+        buildingState.OnAction(location, true);
+        buildingState.EndState();
+
+        index = 0;
+        location = new Vector3Int(2, 0, 2);
+        buildingState = new PlacementState(index, grid, preview, database, floatationData, buildingsData, objectPlacer, soundFeedback, gameManager);
+        buildingState.OnAction(location, true);
+        buildingState.EndState();
+
+        index = 2;
+        location = new Vector3Int(1, 0, 1);
+        buildingState = new PlacementState(index, grid, preview, database, floatationData, buildingsData, objectPlacer, soundFeedback, gameManager);
+        buildingState.OnAction(location, true);
+        buildingState.EndState();
     }
 
     private void Update()
@@ -65,7 +100,7 @@ public class PlacementSystem : MonoBehaviour
         Vector3 mousePosition = inputManager.GetSelectedMapPosition();
         Vector3Int gridPosition = grid.WorldToCell(mousePosition);
 
-        buildingState.OnAction(gridPosition);
+        buildingState.OnAction(gridPosition, false);
     }
 
     public void StartPlacement(int Id)

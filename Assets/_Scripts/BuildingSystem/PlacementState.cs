@@ -53,16 +53,20 @@ public class PlacementState : IPlacementState
         buildPreviewSystem.StopShowingPlacementPreview();
     }
 
-    public void OnAction(Vector3Int gridPosition)
+    public void OnAction(Vector3Int gridPosition, bool isInitial = false)
     {
-        bool placementValidity = CheckPlacementValidity(gridPosition, selectedObjectIndex);
-        if (placementValidity == false)
+        if (isInitial is not true)
         {
-            soundFeedback.PlaySound(SoundType.wrongPlacement);
-            return;
+            bool placementValidity = CheckPlacementValidity(gridPosition, selectedObjectIndex);
+            if (placementValidity == false)
+            {
+                soundFeedback.PlaySound(SoundType.wrongPlacement);
+                return;
+            }
+            PayForBuilding(GetCostDictionary(database.objectsData[selectedObjectIndex]));
+            soundFeedback.PlaySound(database.objectsData[selectedObjectIndex].Id == 0 ? SoundType.PlaceRaft : SoundType.PlaceBuilding);
         }
-        PayForBuilding(GetCostDictionary(database.objectsData[selectedObjectIndex]));
-        soundFeedback.PlaySound(database.objectsData[selectedObjectIndex].Id == 0 ? SoundType.PlaceRaft : SoundType.PlaceBuilding);
+
         int index = objectPlacer.PlaceObject(database.objectsData[selectedObjectIndex].Prefab, grid.CellToWorld(gridPosition));
 
         GridData selectedData = database.objectsData[selectedObjectIndex].Id == 0 ? raftData : buildingData;
