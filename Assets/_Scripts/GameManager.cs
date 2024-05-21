@@ -66,11 +66,11 @@ public class GameManager : MonoBehaviour
 
     private void LoadInitialResources()
     {
-        plastic = 50;
-        driftWood = 10;
-        fishRaw = 10;
-        freshWater = 60;
-        food = 40;
+        plastic = 500;
+        driftWood = 100;
+        fishRaw = 100;
+        freshWater = 600;
+        food = 400;
         survivors = 4;
     }
 
