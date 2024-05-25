@@ -36,31 +36,85 @@ public class BuildPreviewSystem : MonoBehaviour
     {
         float rotationAngle = clockwise == RotationDirection.Clockwise ? 90f : -90f;
         previewObject.transform.Rotate(Vector3.up, rotationAngle, Space.Self);
+        cellIndicator.transform.Rotate(Vector3.up, rotationAngle, Space.Self);
 
         var correctionOffset = GetCorrectionOffset(clockwise);
         previewObject.transform.position += correctionOffset;
+        cellIndicator.transform.position += correctionOffset;
         var updatedSize = new Vector2Int(previewSize.y, previewSize.x);
         previewSize = updatedSize;
     }
+    //private Vector3 GetCorrectionOffset(RotationDirection clockwise)
+    //{
+    //    if (previewOrientation == PreviewOrientation.North)
+    //    {
+    //        previewOrientation = clockwise == RotationDirection.Clockwise ? PreviewOrientation.East : PreviewOrientation.West;
+    //        return clockwise == RotationDirection.Clockwise ? new Vector3(0, 0, previewSize.x) : new Vector3(previewSize.y, 0, 0);
+    //    }
+    //    if (previewOrientation == PreviewOrientation.East)
+    //    {
+    //        previewOrientation = clockwise == RotationDirection.Clockwise ? PreviewOrientation.South : PreviewOrientation.North;
+    //        return clockwise == RotationDirection.Clockwise ? new Vector3(previewSize.y, 0, (-1 * previewSize.x)) : new Vector3(0, 0, -1 * previewSize.y);
+    //    }
+    //    if (previewOrientation == PreviewOrientation.South)
+    //    {
+    //        previewOrientation = clockwise == RotationDirection.Clockwise ? PreviewOrientation.West : PreviewOrientation.East;
+    //        return clockwise == RotationDirection.Clockwise ? new Vector3(-1 * previewSize.y, 0, -1 * previewSize.y) : new Vector3(-1 * previewSize.x, 0, previewSize.y);
+    //    }
+    //    previewOrientation = clockwise == RotationDirection.Clockwise ? PreviewOrientation.North : PreviewOrientation.South;
+    //    return clockwise == RotationDirection.Clockwise ? new Vector3(-1 * previewSize.x, 0, 0) : new Vector3(previewSize.x, 0, previewSize.x);
+    //}
+    //private Vector3 GetCorrectionOffset(RotationDirection clockwise)
+    //{
+    //    // Adjusting the previewOrientation based on the rotation direction
+    //    if (previewOrientation == PreviewOrientation.North)
+    //    {
+    //        previewOrientation = clockwise == RotationDirection.Clockwise ? PreviewOrientation.East : PreviewOrientation.West;
+    //        return clockwise == RotationDirection.Clockwise ? new Vector3(previewSize.x / 2, 0, previewSize.x / 2) : new Vector3(-previewSize.y / 2, 0, previewSize.y / 2);
+    //    }
+    //    if (previewOrientation == PreviewOrientation.East)
+    //    {
+    //        previewOrientation = clockwise == RotationDirection.Clockwise ? PreviewOrientation.South : PreviewOrientation.North;
+    //        return clockwise == RotationDirection.Clockwise ? new Vector3(previewSize.y / 2, 0, -previewSize.y / 2) : new Vector3(-previewSize.x / 2, 0, previewSize.x / 2);
+    //    }
+    //    if (previewOrientation == PreviewOrientation.South)
+    //    {
+    //        previewOrientation = clockwise == RotationDirection.Clockwise ? PreviewOrientation.West : PreviewOrientation.East;
+    //        return clockwise == RotationDirection.Clockwise ? new Vector3(-previewSize.x / 2, 0, -previewSize.x / 2) : new Vector3(previewSize.y / 2, 0, -previewSize.y / 2);
+    //    }
+
+    //    // For PreviewOrientation.West
+    //    previewOrientation = clockwise == RotationDirection.Clockwise ? PreviewOrientation.North : PreviewOrientation.South;
+    //    return clockwise == RotationDirection.Clockwise ? new Vector3(-previewSize.y / 2, 0, previewSize.y / 2) : new Vector3(previewSize.x / 2, 0, -previewSize.x / 2);
+    //}
     private Vector3 GetCorrectionOffset(RotationDirection clockwise)
     {
-        if (previewOrientation == PreviewOrientation.North)
+        Vector3 offset = Vector3.zero;
+
+        switch (previewOrientation)
         {
-            previewOrientation = clockwise == RotationDirection.Clockwise ? PreviewOrientation.East : PreviewOrientation.West;
-            return clockwise == RotationDirection.Clockwise ? new Vector3(0, 0, previewSize.x) : new Vector3(previewSize.y, 0, 0);
+            case PreviewOrientation.North:
+                Debug.Log($"North: x: {previewSize.x}, y: {previewSize.y}");
+                previewOrientation = clockwise == RotationDirection.Clockwise ? PreviewOrientation.East : PreviewOrientation.West;
+                offset = clockwise == RotationDirection.Clockwise ? new Vector3(0, 0, previewSize.x) : new Vector3(previewSize.y, 0, 0);
+                break;
+            case PreviewOrientation.East:
+                Debug.Log($"East: x: {previewSize.x}, y: {previewSize.y}");
+                previewOrientation = clockwise == RotationDirection.Clockwise ? PreviewOrientation.South : PreviewOrientation.North;
+                offset = clockwise == RotationDirection.Clockwise ? new Vector3(previewSize.y, 0, -1 * Mathf.Abs(previewSize.x - previewSize.y)) : new Vector3(0, 0, -previewSize.y);
+                break;
+            case PreviewOrientation.South:
+                Debug.Log($"South: x: {previewSize.x}, y: {previewSize.y}");
+                previewOrientation = clockwise == RotationDirection.Clockwise ? PreviewOrientation.West : PreviewOrientation.East;
+                offset = clockwise == RotationDirection.Clockwise ? new Vector3(-1 * Mathf.Abs(previewSize.x - previewSize.y), 0, -previewSize.y) : new Vector3(-previewSize.x, 0, Mathf.Abs(previewSize.x - previewSize.y));
+                break;
+            case PreviewOrientation.West:
+                Debug.Log($"West: x: {previewSize.x}, y: {previewSize.y}");
+                previewOrientation = clockwise == RotationDirection.Clockwise ? PreviewOrientation.North : PreviewOrientation.South;
+                offset = clockwise == RotationDirection.Clockwise ? new Vector3(-previewSize.x, 0, 0) : new Vector3(Mathf.Abs(previewSize.x - previewSize.y), 0, previewSize.x);
+                break;
         }
-        if (previewOrientation == PreviewOrientation.East)
-        {
-            previewOrientation = clockwise == RotationDirection.Clockwise ? PreviewOrientation.South : PreviewOrientation.North;
-            return clockwise == RotationDirection.Clockwise ? new Vector3(previewSize.y, 0, (-1 * previewSize.x)) : new Vector3(0, 0, -1 * previewSize.y);
-        }
-        if (previewOrientation == PreviewOrientation.South)
-        {
-            previewOrientation = clockwise == RotationDirection.Clockwise ? PreviewOrientation.West : PreviewOrientation.East;
-            return clockwise == RotationDirection.Clockwise ? new Vector3(-1 * previewSize.y, 0, -1 * previewSize.y) : new Vector3(-1 * previewSize.x, 0, previewSize.y);
-        }
-        previewOrientation = clockwise == RotationDirection.Clockwise ? PreviewOrientation.North : PreviewOrientation.South;
-        return clockwise == RotationDirection.Clockwise ? new Vector3(-1 * previewSize.x, 0, 0) : new Vector3(previewSize.x, 0, previewSize.x);
+        return offset;
     }
     private Vector3 GetMoveOffset()
     {
@@ -80,8 +134,30 @@ public class BuildPreviewSystem : MonoBehaviour
     }
     public void StopShowingPlacementPreview()
     {
+        ResetCellIndicator();
         cellIndicator.SetActive(false);
         if (previewObject != null) Destroy(previewObject);
+        previewOrientation = PreviewOrientation.North;
+    }
+
+    private void ResetCellIndicator()
+    {
+        float angle = 0f;
+        switch (previewOrientation)
+        {
+            case PreviewOrientation.North:
+                break;
+            case PreviewOrientation.East:
+                angle = 270;
+                break;
+            case PreviewOrientation.South:
+                angle = 180;
+                break;
+            case PreviewOrientation.West:
+                angle = 90;
+                break;
+        }
+        cellIndicator.transform.Rotate(Vector3.up, angle, Space.Self);
     }
 
     private void PrepareCursor(Vector2Int size)
@@ -136,7 +212,8 @@ public class BuildPreviewSystem : MonoBehaviour
 
     private void MoveCursor(Vector3 position)
     {
-        cellIndicator.transform.position = position;
+        //cellIndicator.transform.position = position;
+        cellIndicator.transform.position = position + GetMoveOffset();
     }
 
     private void MovePreview(Vector3 position)
