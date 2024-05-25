@@ -1,4 +1,5 @@
 using UnityEngine;
+using static BuildPreviewSystem;
 
 public class DemolishState : IPlacementState
 {
@@ -32,7 +33,7 @@ public class DemolishState : IPlacementState
         buildPreviewSystem.StopShowingDemolishPreview();
     }
 
-    public void OnAction(Vector3Int gridPosition, bool isInitial = false)
+    public void OnAction(Vector3Int gridPosition, bool isInitial, PreviewOrientation orientation)
     {
         GridData selectedData = null;
         if (furnitureData.CanPlaceBuildingAt(gridPosition, Vector2Int.one) == false)

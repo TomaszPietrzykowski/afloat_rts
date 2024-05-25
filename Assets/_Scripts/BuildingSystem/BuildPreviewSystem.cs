@@ -9,7 +9,7 @@ public class BuildPreviewSystem : MonoBehaviour
     private GameObject cellIndicator;
     private GameObject previewObject;
     private Vector2Int previewSize;
-    private PreviewOrientation previewOrientation = PreviewOrientation.North;
+    public PreviewOrientation previewOrientation = PreviewOrientation.North;
 
     [SerializeField]
     private Material previewMaterialPrefab;
@@ -44,49 +44,7 @@ public class BuildPreviewSystem : MonoBehaviour
         var updatedSize = new Vector2Int(previewSize.y, previewSize.x);
         previewSize = updatedSize;
     }
-    //private Vector3 GetCorrectionOffset(RotationDirection clockwise)
-    //{
-    //    if (previewOrientation == PreviewOrientation.North)
-    //    {
-    //        previewOrientation = clockwise == RotationDirection.Clockwise ? PreviewOrientation.East : PreviewOrientation.West;
-    //        return clockwise == RotationDirection.Clockwise ? new Vector3(0, 0, previewSize.x) : new Vector3(previewSize.y, 0, 0);
-    //    }
-    //    if (previewOrientation == PreviewOrientation.East)
-    //    {
-    //        previewOrientation = clockwise == RotationDirection.Clockwise ? PreviewOrientation.South : PreviewOrientation.North;
-    //        return clockwise == RotationDirection.Clockwise ? new Vector3(previewSize.y, 0, (-1 * previewSize.x)) : new Vector3(0, 0, -1 * previewSize.y);
-    //    }
-    //    if (previewOrientation == PreviewOrientation.South)
-    //    {
-    //        previewOrientation = clockwise == RotationDirection.Clockwise ? PreviewOrientation.West : PreviewOrientation.East;
-    //        return clockwise == RotationDirection.Clockwise ? new Vector3(-1 * previewSize.y, 0, -1 * previewSize.y) : new Vector3(-1 * previewSize.x, 0, previewSize.y);
-    //    }
-    //    previewOrientation = clockwise == RotationDirection.Clockwise ? PreviewOrientation.North : PreviewOrientation.South;
-    //    return clockwise == RotationDirection.Clockwise ? new Vector3(-1 * previewSize.x, 0, 0) : new Vector3(previewSize.x, 0, previewSize.x);
-    //}
-    //private Vector3 GetCorrectionOffset(RotationDirection clockwise)
-    //{
-    //    // Adjusting the previewOrientation based on the rotation direction
-    //    if (previewOrientation == PreviewOrientation.North)
-    //    {
-    //        previewOrientation = clockwise == RotationDirection.Clockwise ? PreviewOrientation.East : PreviewOrientation.West;
-    //        return clockwise == RotationDirection.Clockwise ? new Vector3(previewSize.x / 2, 0, previewSize.x / 2) : new Vector3(-previewSize.y / 2, 0, previewSize.y / 2);
-    //    }
-    //    if (previewOrientation == PreviewOrientation.East)
-    //    {
-    //        previewOrientation = clockwise == RotationDirection.Clockwise ? PreviewOrientation.South : PreviewOrientation.North;
-    //        return clockwise == RotationDirection.Clockwise ? new Vector3(previewSize.y / 2, 0, -previewSize.y / 2) : new Vector3(-previewSize.x / 2, 0, previewSize.x / 2);
-    //    }
-    //    if (previewOrientation == PreviewOrientation.South)
-    //    {
-    //        previewOrientation = clockwise == RotationDirection.Clockwise ? PreviewOrientation.West : PreviewOrientation.East;
-    //        return clockwise == RotationDirection.Clockwise ? new Vector3(-previewSize.x / 2, 0, -previewSize.x / 2) : new Vector3(previewSize.y / 2, 0, -previewSize.y / 2);
-    //    }
 
-    //    // For PreviewOrientation.West
-    //    previewOrientation = clockwise == RotationDirection.Clockwise ? PreviewOrientation.North : PreviewOrientation.South;
-    //    return clockwise == RotationDirection.Clockwise ? new Vector3(-previewSize.y / 2, 0, previewSize.y / 2) : new Vector3(previewSize.x / 2, 0, -previewSize.x / 2);
-    //}
     private Vector3 GetCorrectionOffset(RotationDirection clockwise)
     {
         Vector3 offset = Vector3.zero;
@@ -233,7 +191,7 @@ public class BuildPreviewSystem : MonoBehaviour
         cellIndicator.SetActive(false);
     }
 
-    private enum PreviewOrientation
+    public enum PreviewOrientation
     {
         North,
         East,

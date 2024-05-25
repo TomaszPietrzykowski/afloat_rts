@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using UnityEngine;
+using static BuildPreviewSystem;
 
 public class PlacementState : IPlacementState
 {
@@ -53,7 +54,7 @@ public class PlacementState : IPlacementState
         buildPreviewSystem.StopShowingPlacementPreview();
     }
 
-    public void OnAction(Vector3Int gridPosition, bool isInitial = false)
+    public void OnAction(Vector3Int gridPosition, bool isInitial, PreviewOrientation orientation)
     {
         if (isInitial is not true)
         {
@@ -67,7 +68,7 @@ public class PlacementState : IPlacementState
             soundFeedback.PlaySound(database.objectsData[selectedObjectIndex].Id == 0 ? SoundType.PlaceRaft : SoundType.PlaceBuilding);
         }
 
-        int index = objectPlacer.PlaceObject(database.objectsData[selectedObjectIndex].Prefab, grid.CellToWorld(gridPosition));
+        int index = objectPlacer.PlaceObject(database.objectsData[selectedObjectIndex].Prefab, grid.CellToWorld(gridPosition), orientation, database.objectsData[selectedObjectIndex].Size);
 
         GridData selectedData = database.objectsData[selectedObjectIndex].Id == 0 ? raftData : buildingData;
         selectedData.AddObjectAt(gridPosition,
@@ -80,20 +81,21 @@ public class PlacementState : IPlacementState
 
     private bool CheckPlacementValidity(Vector3Int gridPosition, int selectedObjectIndex)
     {
-        GridData selectedData = database.objectsData[selectedObjectIndex].Id == 0 ? raftData : buildingData;
-        if (database.objectsData[selectedObjectIndex].Id == 0)
-        {
-            if (raftData.CanPlaceFloatationAt(gridPosition, database.objectsData[selectedObjectIndex].Size))
-            {
-                return CanAffordBuilding(GetCostDictionary(database.objectsData[selectedObjectIndex]));
-            }
-        }
-        else if (buildingData.CanPlaceBuildingAt(gridPosition, database.objectsData[selectedObjectIndex].Size)
-            && raftData.IsRaftAvailaible(gridPosition, database.objectsData[selectedObjectIndex].Size))
-        {
-            return CanAffordBuilding(GetCostDictionary(database.objectsData[selectedObjectIndex]));
-        }
-        return false;
+        return true;
+        //GridData selectedData = database.objectsData[selectedObjectIndex].Id == 0 ? raftData : buildingData;
+        //if (database.objectsData[selectedObjectIndex].Id == 0)
+        //{
+        //    if (raftData.CanPlaceFloatationAt(gridPosition, database.objectsData[selectedObjectIndex].Size))
+        //    {
+        //        return CanAffordBuilding(GetCostDictionary(database.objectsData[selectedObjectIndex]));
+        //    }
+        //}
+        //else if (buildingData.CanPlaceBuildingAt(gridPosition, database.objectsData[selectedObjectIndex].Size)
+        //    && raftData.IsRaftAvailaible(gridPosition, database.objectsData[selectedObjectIndex].Size))
+        //{
+        //    return CanAffordBuilding(GetCostDictionary(database.objectsData[selectedObjectIndex]));
+        //}
+        //return false;
     }
 
     private bool CanAffordBuilding(Dictionary<GameResource, int> cost)
