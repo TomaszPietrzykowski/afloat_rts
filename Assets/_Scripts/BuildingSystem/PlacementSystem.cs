@@ -110,6 +110,8 @@ public class PlacementSystem : MonoBehaviour
         gridVisualization.SetActive(true);
         buildingState = new PlacementState(Id, grid, preview, database, floatationData, buildingsData, objectPlacer, soundFeedback, gameManager);
         inputManager.OnClicked += PlaceStructure;
+        inputManager.OnRotate += RotateStructure;
+        inputManager.OnRotateBack += RotateBackStructure;
         inputManager.OnExit += StopPlacement;
     }
     private void StopPlacement()
@@ -118,11 +120,21 @@ public class PlacementSystem : MonoBehaviour
         gridVisualization.SetActive(false);
         buildingState.EndState();
         inputManager.OnClicked -= PlaceStructure;
+        inputManager.OnRotate -= RotateStructure;
+        inputManager.OnRotateBack -= RotateBackStructure;
         inputManager.OnExit -= StopPlacement;
         lastDetectedPosition = Vector3Int.zero;
         buildingState = null;
     }
 
+    private void RotateStructure()
+    {
+        preview.RotatePlacementPreview(RotationDirection.Clockwise);
+    }
+    private void RotateBackStructure()
+    {
+        preview.RotatePlacementPreview(RotationDirection.CounterClockwise);
+    }
     public void StartDemolish()
     {
         StopPlacement();
@@ -132,4 +144,10 @@ public class PlacementSystem : MonoBehaviour
         inputManager.OnClicked += PlaceStructure;
         inputManager.OnExit += StopPlacement;
     }
+}
+
+public enum RotationDirection
+{
+    Clockwise,
+    CounterClockwise
 }

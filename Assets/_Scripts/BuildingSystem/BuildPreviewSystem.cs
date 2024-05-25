@@ -8,6 +8,8 @@ public class BuildPreviewSystem : MonoBehaviour
     [SerializeField]
     private GameObject cellIndicator;
     private GameObject previewObject;
+    private Vector2Int previewSize;
+    private PreviewOrientation previewOrientation = PreviewOrientation.North;
 
     [SerializeField]
     private Material previewMaterialPrefab;
@@ -22,12 +24,59 @@ public class BuildPreviewSystem : MonoBehaviour
         cellIndicatorRenderer = cellIndicator.GetComponentInChildren<Renderer>();
     }
 
-    public void StartShowingPlacementPreview(GameObject prefab, Vector2Int size)
+    public void StartShowingPlacementPreview(GameObject prefab, Vector2Int size)// receive rotation?
     {
         previewObject = Instantiate(prefab);
+        previewSize = size;
         PreparePreview(previewObject);
         PrepareCursor(size);
         cellIndicator.SetActive(true);
+    }
+    public void RotatePlacementPreview(RotationDirection clockwise)
+    {
+        float rotationAngle = clockwise == RotationDirection.Clockwise ? 90f : -90f;
+        previewObject.transform.Rotate(Vector3.up, rotationAngle, Space.Self);
+
+        var correctionOffset = GetCorrectionOffset(clockwise);
+        previewObject.transform.position += correctionOffset;
+        var updatedSize = new Vector2Int(previewSize.y, previewSize.x);
+        previewSize = updatedSize;
+    }
+    private Vector3 GetCorrectionOffset(RotationDirection clockwise)
+    {
+        if (previewOrientation == PreviewOrientation.North)
+        {
+            previewOrientation = clockwise == RotationDirection.Clockwise ? PreviewOrientation.East : PreviewOrientation.West;
+            return clockwise == RotationDirection.Clockwise ? new Vector3(0, 0, previewSize.x) : new Vector3(previewSize.y, 0, 0);
+        }
+        if (previewOrientation == PreviewOrientation.East)
+        {
+            previewOrientation = clockwise == RotationDirection.Clockwise ? PreviewOrientation.South : PreviewOrientation.North;
+            return clockwise == RotationDirection.Clockwise ? new Vector3(previewSize.y, 0, (-1 * previewSize.x)) : new Vector3(0, 0, -1 * previewSize.y);
+        }
+        if (previewOrientation == PreviewOrientation.South)
+        {
+            previewOrientation = clockwise == RotationDirection.Clockwise ? PreviewOrientation.West : PreviewOrientation.East;
+            return clockwise == RotationDirection.Clockwise ? new Vector3(-1 * previewSize.y, 0, -1 * previewSize.y) : new Vector3(-1 * previewSize.x, 0, previewSize.y);
+        }
+        previewOrientation = clockwise == RotationDirection.Clockwise ? PreviewOrientation.North : PreviewOrientation.South;
+        return clockwise == RotationDirection.Clockwise ? new Vector3(-1 * previewSize.x, 0, 0) : new Vector3(previewSize.x, 0, previewSize.x);
+    }
+    private Vector3 GetMoveOffset()
+    {
+        if (previewOrientation == PreviewOrientation.North)
+        {
+            return new Vector3(0, 0, 0);
+        }
+        if (previewOrientation == PreviewOrientation.East)
+        {
+            return new Vector3(0, 0, previewSize.y);
+        }
+        if (previewOrientation == PreviewOrientation.South)
+        {
+            return new Vector3(previewSize.x, 0, previewSize.y);
+        }
+        return new Vector3(previewSize.x, 0, 0);
     }
     public void StopShowingPlacementPreview()
     {
@@ -92,7 +141,7 @@ public class BuildPreviewSystem : MonoBehaviour
 
     private void MovePreview(Vector3 position)
     {
-        previewObject.transform.position = new Vector3(position.x, position.y + previewYOffset, position.z);
+        previewObject.transform.position = new Vector3(position.x, position.y + previewYOffset, position.z) + GetMoveOffset();
     }
 
     internal void StartShowingDemolishPreview()
@@ -105,5 +154,13 @@ public class BuildPreviewSystem : MonoBehaviour
     internal void StopShowingDemolishPreview()
     {
         cellIndicator.SetActive(false);
+    }
+
+    private enum PreviewOrientation
+    {
+        North,
+        East,
+        South,
+        West
     }
 }

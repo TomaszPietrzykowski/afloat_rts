@@ -12,7 +12,7 @@ public class InputManager : MonoBehaviour
     [SerializeField]
     private LayerMask placementLayerMask;
 
-    public event Action OnClicked, OnExit;
+    public event Action OnClicked, OnRotate, OnRotateBack, OnExit;
 
     private void Update()
     {
@@ -29,6 +29,19 @@ public class InputManager : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.Escape))
         {
             OnExit?.Invoke();
+        }
+
+        if (Input.GetKeyDown(KeyCode.R))
+        {
+            OnRotate?.Invoke();
+        }
+        if (Input.GetAxis("Mouse ScrollWheel") < 0)
+        {
+            OnRotate?.Invoke();
+        }
+        if (Input.GetAxis("Mouse ScrollWheel") > 0)
+        {
+            OnRotateBack?.Invoke();
         }
     }
 

@@ -34,10 +34,10 @@ MonoBehaviour:
       type: 3}
     <CostPlastic>k__BackingField: 2
     <CostWood>k__BackingField: 4
-  - <Name>k__BackingField: Table
+  - <Name>k__BackingField: Survival_Kitchen
     <Id>k__BackingField: 3
     <Size>k__BackingField: {x: 2, y: 1}
-    <Prefab>k__BackingField: {fileID: 3493615974341626966, guid: c8183485a28237d4385a3c7ef8659faa,
+    <Prefab>k__BackingField: {fileID: 8688140666421844595, guid: ea46cbebf22fcb94e8b442dd97ae990c,
       type: 3}
-    <CostPlastic>k__BackingField: 60
-    <CostWood>k__BackingField: 0
+    <CostPlastic>k__BackingField: 10
+    <CostWood>k__BackingField: 20
