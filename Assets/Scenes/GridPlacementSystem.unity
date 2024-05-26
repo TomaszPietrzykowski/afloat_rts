@@ -2639,12 +2639,22 @@ PrefabInstance:
     - target: {fileID: 3101073841027178503, guid: 8ece0f0faf8317849a46eacc430a72b1,
         type: 3}
       propertyPath: m_SizeDelta.x
-      value: 70
+      value: 79.682
       objectReference: {fileID: 0}
     - target: {fileID: 3101073841027178503, guid: 8ece0f0faf8317849a46eacc430a72b1,
         type: 3}
       propertyPath: m_SizeDelta.y
-      value: 70
+      value: 62.294
+      objectReference: {fileID: 0}
+    - target: {fileID: 3101073841027178503, guid: 8ece0f0faf8317849a46eacc430a72b1,
+        type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: -2.4129815
+      objectReference: {fileID: 0}
+    - target: {fileID: 3101073841027178503, guid: 8ece0f0faf8317849a46eacc430a72b1,
+        type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: -0.5983422
       objectReference: {fileID: 0}
     - target: {fileID: 6175041104697196024, guid: 8ece0f0faf8317849a46eacc430a72b1,
         type: 3}
@@ -2754,7 +2764,7 @@ PrefabInstance:
     - target: {fileID: 6247844462150689701, guid: 8ece0f0faf8317849a46eacc430a72b1,
         type: 3}
       propertyPath: m_Name
-      value: f
+      value: Image
       objectReference: {fileID: 0}
     - target: {fileID: 7401616350368380843, guid: 8ece0f0faf8317849a46eacc430a72b1,
         type: 3}
@@ -2820,7 +2830,7 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Sprite
       value: 
-      objectReference: {fileID: -1540450446, guid: a0b6a4aacac1d274eb7c54760c3472b1,
+      objectReference: {fileID: 21300000, guid: 26823d722d37ba94994edde4974f913e,
         type: 3}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -3698,6 +3708,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   previewYOffset: 0.06
   cellIndicator: {fileID: 1160613950}
+  previewOrientation: 0
   previewMaterialPrefab: {fileID: 2100000, guid: 45f2f012257c09a40b67140738129813,
     type: 2}
 --- !u!4 &1228212300
@@ -5438,6 +5449,9 @@ MonoBehaviour:
   survivorsText: {fileID: 367771929}
   chanceForPlastic: 500
   chanceForWood: 200
+  raftIndexes: 0000000004000000
+  buildingsIndexes: 010000000200000003000000
+  specialIndexes: 05000000
 --- !u!4 &1710511614
 Transform:
   m_ObjectHideFlags: 0
