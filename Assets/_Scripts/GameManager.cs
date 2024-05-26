@@ -1,5 +1,6 @@
 using UnityEngine;
 using TMPro;
+using System.Collections.Generic;
 
 public class GameManager : MonoBehaviour
 {
@@ -34,6 +35,17 @@ public class GameManager : MonoBehaviour
     // chance to ocean comb: (0-100k)
     public int chanceForPlastic = 200;
     public int chanceForWood = 100;
+
+    // Building categories
+    // ** Rafts/floatation:
+    public List<int> raftIndexes = new() { 0, 4 };
+    // ** Buildings (require floatation/raft):
+    public List<int> buildingsIndexes = new() { 1, 2, 3 };
+    // ** Water structures (built on water):
+    public List<int> specialIndexes = new() { 5 };
+    // ---------------------------------------------------
+    //
+
     void Start()
     {
         LoadSavedGame();

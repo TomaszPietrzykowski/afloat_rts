@@ -5,7 +5,7 @@ using static BuildPreviewSystem;
 
 public class PlacementState : IPlacementState
 {
-    private int selectedObjectIndex = -1;
+    public int selectedObjectIndex = -1;
     int Id;
     Grid grid;
     BuildPreviewSystem buildPreviewSystem;
@@ -58,7 +58,7 @@ public class PlacementState : IPlacementState
     {
         if (isInitial is not true)
         {
-            bool placementValidity = CheckPlacementValidity(gridPosition, selectedObjectIndex);
+            bool placementValidity = CheckPlacementValidity(gridPosition, selectedObjectIndex, orientation);
             if (placementValidity == false)
             {
                 soundFeedback.PlaySound(SoundType.wrongPlacement);
@@ -70,32 +70,47 @@ public class PlacementState : IPlacementState
 
         int index = objectPlacer.PlaceObject(database.objectsData[selectedObjectIndex].Prefab, grid.CellToWorld(gridPosition), orientation, database.objectsData[selectedObjectIndex].Size);
 
-        GridData selectedData = database.objectsData[selectedObjectIndex].Id == 0 ? raftData : buildingData;
+        GridData selectedData = gameManager.raftIndexes.Contains(database.objectsData[selectedObjectIndex].Id) ? raftData : buildingData;
+        Vector2Int size = database.objectsData[selectedObjectIndex].Size;
+        if (orientation == PreviewOrientation.East || orientation == PreviewOrientation.West)
+        {
+            size = new Vector2Int(database.objectsData[selectedObjectIndex].Size.y, database.objectsData[selectedObjectIndex].Size.x);
+        }
         selectedData.AddObjectAt(gridPosition,
-                                 database.objectsData[selectedObjectIndex].Size,
+                                 size,
                                  database.objectsData[selectedObjectIndex].Id,
                                  index,
                                  GetCostDictionary(database.objectsData[selectedObjectIndex]));
         buildPreviewSystem.UpdatePosition(grid.CellToWorld(gridPosition), false);
     }
-
-    private bool CheckPlacementValidity(Vector3Int gridPosition, int selectedObjectIndex)
+    // refresh validation of the ghost and cell indicator after rotation:
+    public void RefreshValidation(Vector3Int gridPosition, PreviewOrientation orientation)
     {
-        return true;
-        //GridData selectedData = database.objectsData[selectedObjectIndex].Id == 0 ? raftData : buildingData;
-        //if (database.objectsData[selectedObjectIndex].Id == 0)
-        //{
-        //    if (raftData.CanPlaceFloatationAt(gridPosition, database.objectsData[selectedObjectIndex].Size))
-        //    {
-        //        return CanAffordBuilding(GetCostDictionary(database.objectsData[selectedObjectIndex]));
-        //    }
-        //}
-        //else if (buildingData.CanPlaceBuildingAt(gridPosition, database.objectsData[selectedObjectIndex].Size)
-        //    && raftData.IsRaftAvailaible(gridPosition, database.objectsData[selectedObjectIndex].Size))
-        //{
-        //    return CanAffordBuilding(GetCostDictionary(database.objectsData[selectedObjectIndex]));
-        //}
-        //return false;
+        buildPreviewSystem.UpdatePosition(grid.CellToWorld(gridPosition), CheckPlacementValidity(gridPosition, selectedObjectIndex, orientation));
+    }
+
+    public bool CheckPlacementValidity(Vector3Int gridPosition, int selectedObjectIndex, PreviewOrientation orientation)
+    {
+        Vector2Int size = database.objectsData[selectedObjectIndex].Size;
+        if (orientation == PreviewOrientation.East || orientation == PreviewOrientation.West)
+        {
+            size = new Vector2Int(database.objectsData[selectedObjectIndex].Size.y, database.objectsData[selectedObjectIndex].Size.x);
+        }
+        // validate raft:
+        if (gameManager.raftIndexes.Contains(database.objectsData[selectedObjectIndex].Id))
+        {
+            if (raftData.CanPlaceFloatationAt(gridPosition, size))
+            {
+                return CanAffordBuilding(GetCostDictionary(database.objectsData[selectedObjectIndex]));
+            }
+        }
+        // validate building:
+        else if (buildingData.CanPlaceBuildingAt(gridPosition, size)
+            && raftData.IsRaftAvailaible(gridPosition, size))
+        {
+            return CanAffordBuilding(GetCostDictionary(database.objectsData[selectedObjectIndex]));
+        }
+        return false;
     }
 
     private bool CanAffordBuilding(Dictionary<GameResource, int> cost)
@@ -127,9 +142,9 @@ public class PlacementState : IPlacementState
         }
     }
 
-    public void UpdateState(Vector3Int gridPosition)
+    public void UpdateState(Vector3Int gridPosition, PreviewOrientation orientation)
     {
-        bool placementValidity = CheckPlacementValidity(gridPosition, selectedObjectIndex);
+        bool placementValidity = CheckPlacementValidity(gridPosition, selectedObjectIndex, orientation);
         buildPreviewSystem.UpdatePosition(grid.CellToWorld(gridPosition), placementValidity);
     }
 

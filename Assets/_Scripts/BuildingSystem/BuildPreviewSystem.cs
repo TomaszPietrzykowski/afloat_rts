@@ -52,22 +52,18 @@ public class BuildPreviewSystem : MonoBehaviour
         switch (previewOrientation)
         {
             case PreviewOrientation.North:
-                Debug.Log($"North: x: {previewSize.x}, y: {previewSize.y}");
                 previewOrientation = clockwise == RotationDirection.Clockwise ? PreviewOrientation.East : PreviewOrientation.West;
                 offset = clockwise == RotationDirection.Clockwise ? new Vector3(0, 0, previewSize.x) : new Vector3(previewSize.y, 0, 0);
                 break;
             case PreviewOrientation.East:
-                Debug.Log($"East: x: {previewSize.x}, y: {previewSize.y}");
                 previewOrientation = clockwise == RotationDirection.Clockwise ? PreviewOrientation.South : PreviewOrientation.North;
                 offset = clockwise == RotationDirection.Clockwise ? new Vector3(previewSize.y, 0, -1 * Mathf.Abs(previewSize.x - previewSize.y)) : new Vector3(0, 0, -previewSize.y);
                 break;
             case PreviewOrientation.South:
-                Debug.Log($"South: x: {previewSize.x}, y: {previewSize.y}");
                 previewOrientation = clockwise == RotationDirection.Clockwise ? PreviewOrientation.West : PreviewOrientation.East;
                 offset = clockwise == RotationDirection.Clockwise ? new Vector3(-1 * Mathf.Abs(previewSize.x - previewSize.y), 0, -previewSize.y) : new Vector3(-previewSize.x, 0, Mathf.Abs(previewSize.x - previewSize.y));
                 break;
             case PreviewOrientation.West:
-                Debug.Log($"West: x: {previewSize.x}, y: {previewSize.y}");
                 previewOrientation = clockwise == RotationDirection.Clockwise ? PreviewOrientation.North : PreviewOrientation.South;
                 offset = clockwise == RotationDirection.Clockwise ? new Vector3(-previewSize.x, 0, 0) : new Vector3(Mathf.Abs(previewSize.x - previewSize.y), 0, previewSize.x);
                 break;
@@ -106,13 +102,13 @@ public class BuildPreviewSystem : MonoBehaviour
             case PreviewOrientation.North:
                 break;
             case PreviewOrientation.East:
-                angle = 270;
+                angle = 270f;
                 break;
             case PreviewOrientation.South:
-                angle = 180;
+                angle = 180f;
                 break;
             case PreviewOrientation.West:
-                angle = 90;
+                angle = 90f;
                 break;
         }
         cellIndicator.transform.Rotate(Vector3.up, angle, Space.Self);
@@ -154,14 +150,14 @@ public class BuildPreviewSystem : MonoBehaviour
         ApplyFeedbackToCursor(validity);
     }
 
-    private void ApplyFeedbackToPreview(bool validity)
+    public void ApplyFeedbackToPreview(bool validity)
     {
         Color color = validity ? Color.white : Color.red;
         color.a = 0.5f;
         previewMaterialInstance.color = color;
     }
 
-    private void ApplyFeedbackToCursor(bool validity)
+    public void ApplyFeedbackToCursor(bool validity)
     {
         Color color = validity ? Color.white : Color.red;
         color.a = 0.5f;

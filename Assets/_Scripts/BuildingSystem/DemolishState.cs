@@ -71,9 +71,14 @@ public class DemolishState : IPlacementState
         return !(furnitureData.CanPlaceBuildingAt(gridPosition, Vector2Int.one) && floorData.CanPlaceFloatationAt(gridPosition, Vector2Int.one));
     }
 
-    public void UpdateState(Vector3Int gridPosition)
+    public void UpdateState(Vector3Int gridPosition, PreviewOrientation orientation)
     {
         bool validity = IsSelectionValid(gridPosition);
         buildPreviewSystem.UpdatePosition(grid.CellToWorld(gridPosition), validity);
+    }
+    // refactor:
+    public void RefreshValidation(Vector3Int gridPosition, PreviewOrientation orientation)
+    {
+        return;
     }
 }

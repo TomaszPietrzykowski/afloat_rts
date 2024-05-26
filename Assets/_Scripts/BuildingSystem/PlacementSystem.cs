@@ -87,7 +87,7 @@ public class PlacementSystem : MonoBehaviour
 
         if (lastDetectedPosition != gridPosition)
         {
-            buildingState.UpdateState(gridPosition);
+            buildingState.UpdateState(gridPosition, preview.previewOrientation);
             lastDetectedPosition = gridPosition;
         }
 
@@ -130,10 +130,18 @@ public class PlacementSystem : MonoBehaviour
     private void RotateStructure()
     {
         preview.RotatePlacementPreview(RotationDirection.Clockwise);
+        if (inputManager.IsPointerOverUi()) return;
+        Vector3 mousePosition = inputManager.GetSelectedMapPosition();
+        Vector3Int gridPosition = grid.WorldToCell(mousePosition);
+        buildingState.RefreshValidation(gridPosition, preview.previewOrientation);
     }
     private void RotateBackStructure()
     {
         preview.RotatePlacementPreview(RotationDirection.CounterClockwise);
+        if (inputManager.IsPointerOverUi()) return;
+        Vector3 mousePosition = inputManager.GetSelectedMapPosition();
+        Vector3Int gridPosition = grid.WorldToCell(mousePosition);
+        buildingState.RefreshValidation(gridPosition, preview.previewOrientation);
     }
     public void StartDemolish()
     {
