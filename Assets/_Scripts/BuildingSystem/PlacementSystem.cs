@@ -30,7 +30,9 @@ public class PlacementSystem : MonoBehaviour
 
     private Vector3Int lastDetectedPosition = Vector3Int.zero;
 
-    IPlacementState buildingState;
+    public IPlacementState buildingState;
+
+    private bool _isActiveBuidingState = false;
 
     [SerializeField]
     SoundFeedback soundFeedback;
@@ -42,6 +44,10 @@ public class PlacementSystem : MonoBehaviour
         floatationData = new GridData();
         buildingsData = new GridData();
         setupInitialBuildings();
+    }
+    public bool IsActiveBuildingState()
+    {
+        return _isActiveBuidingState;
     }
 
     public void setupInitialBuildings()
@@ -101,6 +107,7 @@ public class PlacementSystem : MonoBehaviour
         Vector3Int gridPosition = grid.WorldToCell(mousePosition);
 
         buildingState.OnAction(gridPosition, false, preview.previewOrientation);
+        _isActiveBuidingState = false;
     }
 
     public void StartPlacement(int Id)
@@ -113,6 +120,7 @@ public class PlacementSystem : MonoBehaviour
         inputManager.OnRotate += RotateStructure;
         inputManager.OnRotateBack += RotateBackStructure;
         inputManager.OnExit += StopPlacement;
+        _isActiveBuidingState = true;
     }
     private void StopPlacement()
     {
@@ -125,6 +133,7 @@ public class PlacementSystem : MonoBehaviour
         inputManager.OnExit -= StopPlacement;
         lastDetectedPosition = Vector3Int.zero;
         buildingState = null;
+        _isActiveBuidingState = false;
     }
 
     private void RotateStructure()
