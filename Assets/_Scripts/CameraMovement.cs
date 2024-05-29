@@ -25,6 +25,8 @@ public class CameraMovement : MonoBehaviour
     public Vector3 originalPosition;
     public Quaternion originalRotation;
     public Vector3 originalZoom;
+
+    public GameManager gameManager;
     void Start()
     {
         newPosition = transform.position;
@@ -88,11 +90,11 @@ public class CameraMovement : MonoBehaviour
         {
             newRotation *= Quaternion.Euler(Vector3.up * -rotationAmount);
         }
-        if (Input.GetKey(KeyCode.R))
+        if (Input.GetKey(KeyCode.R) && !gameManager.IsOngoingBuildingPlacement)
         {
             newZoom += (zoomAmount * zoomConstantFactor);
         }
-        if (Input.GetKey(KeyCode.F))
+        if (Input.GetKey(KeyCode.F) && !gameManager.IsOngoingBuildingPlacement)
         {
             newZoom -= (zoomAmount * zoomConstantFactor);
         }

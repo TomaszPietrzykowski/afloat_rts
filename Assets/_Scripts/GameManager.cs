@@ -44,7 +44,8 @@ public class GameManager : MonoBehaviour
     // ** Water structures (built on water):
     public List<int> specialIndexes = new() { 5 };
     // ---------------------------------------------------
-    //
+
+    public bool IsOngoingBuildingPlacement { get; set; }
 
     void Start()
     {

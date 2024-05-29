@@ -3793,6 +3793,7 @@ MonoBehaviour:
   previewOrientation: 0
   previewMaterialPrefab: {fileID: 2100000, guid: 45f2f012257c09a40b67140738129813,
     type: 2}
+  gameManager: {fileID: 1710511613}
 --- !u!4 &1228212300
 Transform:
   m_ObjectHideFlags: 0
@@ -5729,6 +5730,7 @@ MonoBehaviour:
   originalPosition: {x: 0, y: 0, z: 0}
   originalRotation: {x: 0, y: 0, z: 0, w: 0}
   originalZoom: {x: 0, y: 0, z: 0}
+  gameManager: {fileID: 1710511613}
 --- !u!1001 &1709610785
 PrefabInstance:
   m_ObjectHideFlags: 0

@@ -16,6 +16,7 @@ public class BuildPreviewSystem : MonoBehaviour
     private Material previewMaterialInstance;
 
     private Renderer cellIndicatorRenderer;
+    public GameManager gameManager;
 
     private void Start()
     {
@@ -26,6 +27,7 @@ public class BuildPreviewSystem : MonoBehaviour
 
     public void StartShowingPlacementPreview(GameObject prefab, Vector2Int size)// receive rotation?
     {
+        gameManager.IsOngoingBuildingPlacement = true;
         previewObject = Instantiate(prefab);
         previewSize = size;
         PreparePreview(previewObject);
@@ -88,6 +90,7 @@ public class BuildPreviewSystem : MonoBehaviour
     }
     public void StopShowingPlacementPreview()
     {
+        gameManager.IsOngoingBuildingPlacement = false;
         ResetCellIndicator();
         cellIndicator.SetActive(false);
         if (previewObject != null) Destroy(previewObject);
