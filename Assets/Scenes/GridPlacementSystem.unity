@@ -5717,13 +5717,18 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   cameraTrasform: {fileID: 330585546}
   movementTime: 5
+  placementSystem: {fileID: 1354992802}
   normalSpeed: 20
   fastSpeed: 60
-  rotationAmount: 1
+  rotationAmount: 0.5
   zoomAmount: {x: 0, y: -1, z: 1}
+  panBorderThickness: 10
   newPosition: {x: 0, y: 0, z: 0}
   newRotation: {x: 0, y: 0, z: 0, w: 0}
   newZoom: {x: 0, y: 0, z: 0}
+  originalPosition: {x: 0, y: 0, z: 0}
+  originalRotation: {x: 0, y: 0, z: 0, w: 0}
+  originalZoom: {x: 0, y: 0, z: 0}
 --- !u!1001 &1709610785
 PrefabInstance:
   m_ObjectHideFlags: 0
