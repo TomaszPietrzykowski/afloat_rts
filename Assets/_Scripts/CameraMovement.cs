@@ -15,6 +15,7 @@ public class CameraMovement : MonoBehaviour
     private float zoomWheelConstantFactor = 0.3f;
 
     public Vector2 panLimit;
+    public Vector2 zoomLimit;
 
     public float normalSpeed;
     public float fastSpeed;
@@ -132,6 +133,9 @@ public class CameraMovement : MonoBehaviour
 
         newPosition.x = Mathf.Clamp(newPosition.x, -panLimit.x, panLimit.x);
         newPosition.z = Mathf.Clamp(newPosition.z, -panLimit.y, panLimit.y);
+
+        newZoom.y = Mathf.Clamp(newZoom.y, zoomLimit.x, zoomLimit.y);
+        newZoom.z = Mathf.Clamp(newZoom.z, -zoomLimit.y, zoomLimit.x);
 
         transform.position = Vector3.Lerp(transform.position, newPosition, Time.deltaTime * movementTime);
         transform.rotation = Quaternion.Lerp(transform.rotation, newRotation, Time.deltaTime * movementTime);
