@@ -1,8 +1,9 @@
+using System.Collections;
 using UnityEngine;
 
 public class CameraMovement : MonoBehaviour
 {
-    public Transform cameraTrasform;
+    public Transform cameraTransform;
 
     public float movementTime;
 
@@ -12,6 +13,8 @@ public class CameraMovement : MonoBehaviour
     private float movementConstantFactor = 0.001f;
     private float zoomConstantFactor = 0.03f;
     private float zoomWheelConstantFactor = 0.3f;
+
+    public Vector2 panLimit;
 
     public float normalSpeed;
     public float fastSpeed;
@@ -31,28 +34,51 @@ public class CameraMovement : MonoBehaviour
     {
         newPosition = transform.position;
         newRotation = transform.rotation;
-        newZoom = cameraTrasform.localPosition;
+        newZoom = cameraTransform.localPosition;
         originalPosition = transform.position;
         originalRotation = transform.rotation;
-        originalZoom = cameraTrasform.localPosition;
+        originalZoom = cameraTransform.localPosition;
     }
 
-    // Update is called once per frame
     void Update()
     {
         HandleMovementInput();
+        if (Input.GetKeyDown(KeyCode.Escape))
+        {
+            if (resetOngoing) return;
+            StartCoroutine(ResetCamera());
+        }
     }
     private bool resetOngoing = false;
-    private void ResetCamera() // TODO: fix
+    private IEnumerator ResetCamera()
     {
-        if (resetOngoing) return;
         resetOngoing = true;
-        //transform.position = Vector3.Lerp(transform.position, originalPosition, Time.deltaTime * movementTime);
-        //transform.rotation = Quaternion.Lerp(transform.rotation, originalRotation, Time.deltaTime * movementTime);
-        //cameraTrasform.localPosition = Vector3.Lerp(cameraTrasform.localPosition, originalZoom, Time.deltaTime * movementTime);
+        Vector3 startPosition = transform.position;
+        Quaternion startRotation = transform.rotation;
+        Vector3 startZoom = cameraTransform.localPosition;
+
+        float elapsedTime = 0f;
+        float resetTime = 1f;
+
+        while (elapsedTime < resetTime)
+        {
+            elapsedTime += Time.deltaTime;
+            float t = Mathf.Clamp01(elapsedTime / resetTime);
+
+            transform.position = Vector3.Lerp(startPosition, originalPosition, t);
+            transform.rotation = Quaternion.Lerp(startRotation, originalRotation, t);
+            cameraTransform.localPosition = Vector3.Lerp(startZoom, originalZoom, t);
+
+            yield return null;
+        }
+
         transform.position = originalPosition;
         transform.rotation = originalRotation;
-        cameraTrasform.localPosition = originalZoom;
+        cameraTransform.localPosition = originalZoom;
+        newPosition = transform.position;
+        newRotation = transform.rotation;
+        newZoom = cameraTransform.localPosition;
+
         resetOngoing = false;
     }
 
@@ -106,13 +132,12 @@ public class CameraMovement : MonoBehaviour
         {
             newZoom -= (zoomAmount * zoomWheelConstantFactor);
         }
-        if (Input.GetKeyDown(KeyCode.Escape))
-        {
-            ResetCamera();
-        }
+
+        newPosition.x = Mathf.Clamp(newPosition.x, -panLimit.x, panLimit.x);
+        newPosition.z = Mathf.Clamp(newPosition.z, -panLimit.y, panLimit.y);
 
         transform.position = Vector3.Lerp(transform.position, newPosition, Time.deltaTime * movementTime);
         transform.rotation = Quaternion.Lerp(transform.rotation, newRotation, Time.deltaTime * movementTime);
-        cameraTrasform.localPosition = Vector3.Lerp(cameraTrasform.localPosition, newZoom, Time.deltaTime * movementTime);
+        cameraTransform.localPosition = Vector3.Lerp(cameraTransform.localPosition, newZoom, Time.deltaTime * movementTime);
     }
 }

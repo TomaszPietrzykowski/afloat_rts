@@ -5716,9 +5716,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 10fcbfb493cd0444c823df2d469bfc0a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  cameraTrasform: {fileID: 330585546}
+  cameraTransform: {fileID: 330585546}
   movementTime: 5
   placementSystem: {fileID: 1354992802}
+  panLimit: {x: 20, y: 20}
   normalSpeed: 20
   fastSpeed: 60
   rotationAmount: 0.5
