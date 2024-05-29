@@ -72,12 +72,9 @@ public class CameraMovement : MonoBehaviour
             yield return null;
         }
 
-        transform.position = originalPosition;
-        transform.rotation = originalRotation;
-        cameraTransform.localPosition = originalZoom;
-        newPosition = transform.position;
-        newRotation = transform.rotation;
-        newZoom = cameraTransform.localPosition;
+        newPosition = originalPosition;
+        newRotation = originalRotation;
+        newZoom = originalZoom;
 
         resetOngoing = false;
     }
