@@ -5720,6 +5720,7 @@ MonoBehaviour:
   movementTime: 5
   placementSystem: {fileID: 1354992802}
   panLimit: {x: 20, y: 20}
+  zoomLimit: {x: 7, y: 40}
   normalSpeed: 20
   fastSpeed: 60
   rotationAmount: 0.5

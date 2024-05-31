@@ -122,11 +122,11 @@ public class CameraMovement : MonoBehaviour
         {
             newZoom -= (zoomAmount * zoomConstantFactor);
         }
-        if (Input.GetAxis("Mouse ScrollWheel") > 0 && !placementSystem.IsActiveBuildingState())
+        if (Input.GetAxis("Mouse ScrollWheel") > 0 && !gameManager.IsOngoingBuildingPlacement)
         {
             newZoom += (zoomAmount * zoomWheelConstantFactor);
         }
-        if (Input.GetAxis("Mouse ScrollWheel") < 0 && !placementSystem.IsActiveBuildingState())
+        if (Input.GetAxis("Mouse ScrollWheel") < 0 && !gameManager.IsOngoingBuildingPlacement)
         {
             newZoom -= (zoomAmount * zoomWheelConstantFactor);
         }
